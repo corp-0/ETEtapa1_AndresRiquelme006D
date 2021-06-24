@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-v92cpqqx)&oasyalx_h_$+v$5^h(-mv)f0+g4xd=v0%x2%nws3
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+AUTH_USER_MODEL = 'caosnews.Usuario'
 
 
 # Application definition
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'ETEtapa1_AndresRiquelme006D.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR / 'caosnews/../templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -79,10 +80,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'xe',
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASS'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '1521'),
+        'USER': os.getenv('CAOS_DB_USER'),
+        'PASSWORD': os.getenv('CAOS_DB_PASS'),
+        'HOST': os.getenv('CAOS_DB_HOST', 'localhost'),
+        'PORT': os.getenv('CAOS_DB_PORT', '1521'),
     }
 }
 
@@ -109,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'UTC'
 
