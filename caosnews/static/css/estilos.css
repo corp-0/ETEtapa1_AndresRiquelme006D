@@ -1,0 +1,33 @@
+ul.sidenav.sidenav-fixed li.logo {
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 114px;
+}
+
+#logo-container {
+    height: 10px;
+    margin-bottom: 32px;
+}
+
+#front-page-logo {
+    display: inline-block;
+    height: 114px;
+    pointer-events: none;
+    fill: whitesmoke;
+    color: whitesmoke;
+}
+
+header, main, footer {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width: 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+}
+
+.noticia-contenido {
+  text-align: justify;
+  text-justify: inter-word;
+}

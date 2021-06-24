@@ -1,0 +1,35 @@
+{% extends 'sitio/base.html' %}
+{% block contenido %}
+    {% if noticia_caliente %}
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card horizontal">
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <p>¡Noticia caliente!</p>
+                                <h3 class="flow-text">{{ noticia_caliente.titulo }}</h3>
+                                <small>por {{ noticia_caliente.autor }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% for post in posts %}
+        <h3>{{ post.titulo }}</h3>
+        <p>por <a href="#">{{ post.autor }}</a>, escrito el {{ post.fecha }}</p>
+        <div class="noticia-contenido">
+            <p>{{ post.contenido }}</p>
+        </div>
+    {% endfor %}
+    {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}" class="left"> << Noticia anterior </a>
+    {% endif %}
+    {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}" class="right"> Más noticias >> </a>
+    {% endif %}
+    </br></br></br>
+{% endblock %}
