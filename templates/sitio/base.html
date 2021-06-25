@@ -24,7 +24,9 @@
 
         </div>
     </li>
-    <li><a href="#" class="white-text">First Sidebar Link</a></li>
+    {% if user.is_authenticated and user.es_sysadmin %}
+        <li><a href="#" class="white-text">CRUD</a></li>
+    {% endif %}
     <li><a href="#" class="white-text">Second Sidebar Link</a></li>
 </ul>
 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons red-text">menu</i></a>
