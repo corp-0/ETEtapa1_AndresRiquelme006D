@@ -199,6 +199,7 @@ from caosnews.models import Colaborador, Publicacion
 class Command(BaseCommand):
     help = "Genera una cantidad de noticias que pueden o no estar publicadas"
     autores = Colaborador.objects.all()
+    publicaciones = []
 
     def add_arguments(self, parser):
         parser.add_argument('cantidad', type=int)
@@ -207,6 +208,7 @@ class Command(BaseCommand):
         print("generando noticias...")
         for i in range(0, options.get('cantidad', 100)):
             self.generar()
+        Publicacion.objects.bulk_create(self.publicaciones)
 
     def generar(self):
         titulo = f"{random.choice(animales)} {random.choice(adjetivos)}"
@@ -215,5 +217,4 @@ class Command(BaseCommand):
         publicada = random.random() < 0.8
 
         noticia = Publicacion(titulo=titulo, contenido=contenido, autor=autor, publicada=publicada)
-        noticia.save()
-
+        self.publicaciones.append(noticia)

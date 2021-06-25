@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from caosnews.models import Usuario
-from caosnews.usuario import Tipo
+from caosnews.models import Usuario, Colaborador, Publicacion
+from caosnews.tipo_usuario import Tipo
 from .generarusuarios import Command as GeneradorUsuarios
 from .generarnoticias import Command as GeneradorNoticias
 
@@ -16,10 +16,17 @@ def crear_superusuario():
     admin.save()
 
 
+def eliminar_todo():
+    Publicacion.objects.all().delete()
+    Colaborador.objects.all().delete()
+    Usuario.objects.all().delete()
+
+
 class Command(BaseCommand):
     help = "Puebla la base de datos con data de prueba"
 
     def handle(self, *args, **options):
+        eliminar_todo()
         crear_superusuario()
         GeneradorUsuarios().handle()
         GeneradorNoticias().handle()
