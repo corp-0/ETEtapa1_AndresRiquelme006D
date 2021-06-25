@@ -1,4 +1,5 @@
 import random
+import operator
 
 nombres = [
     "Liam", "Olivia", "Noah",
@@ -83,20 +84,22 @@ class Command(BaseCommand):
             usuarios.append(u)
 
         Usuario.objects.bulk_create(usuarios)
-        usuarios = Usuario.objects.all()
+
+        usuarios = Usuario.objects.filter(tipo_usuario=Tipo.COLABORADOR.value).order_by("username")
+        fakes = [fake for fake in fakes if fake.es_colaborador]
+        fakes.sort(key=operator.attrgetter("nombre_completo"))
 
         for index, f in enumerate(fakes):
-            if f.es_colaborador:
-                c = Colaborador(
-                    user=usuarios[index],
-                    rut=f.rut,
-                    foto=f.foto,
-                    nombre=f.nombre_completo,
-                    fono=f.fono,
-                    direccion=f.direccion,
-                    pais=f.pais
-                )
+            c = Colaborador(
+                user=usuarios[index],
+                rut=f.rut,
+                foto=f.foto,
+                nombre=f.nombre_completo,
+                fono=f.fono,
+                direccion=f.direccion,
+                pais=f.pais
+            )
 
-                colabs.append(c)
+            colabs.append(c)
 
         Colaborador.objects.bulk_create(colabs)
