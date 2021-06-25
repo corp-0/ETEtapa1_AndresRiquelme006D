@@ -1,0 +1,34 @@
+{% extends 'sitio/home.html' %}
+
+{% block contenido %}
+    <article>
+        <section>
+            <h3>{{ noticia.titulo }}</h3>
+            <p>{{ noticia.contenido }}</p>
+        </section>
+        <section>
+            <ul class="collection">
+                <li class="collection-item avatar">
+                    <img src="https://thispersondoesnotexist.com/favicon.png" alt="foto de {{ noticia.autor }}"
+                         class="circle">
+                    <span class="title">{{ noticia.autor }}</span>
+                    <p>Escrita el {{ noticia.fecha }}</p>
+                    <p class="right">Visitas: {{ noticia.visitas }}</p>
+                </li>
+
+                <li class="collection-item">
+                    {% if mas_noticias %}
+                        <p class="collection-header">Más de este autor:</p>
+                        {% for mas in mas_noticias %}
+                            <div>
+                                <a href="{% url 'noticia' mas.pk %}">{{ mas.titulo }}</a>
+                                <span class="right">visitas: {{ mas.visitas }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </li>
+            </ul>
+        </section>
+    </article>
+
+{% endblock %}
