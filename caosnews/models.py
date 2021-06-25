@@ -4,6 +4,11 @@ from .tipo_usuario import TIPO_CHOICES, Tipo
 
 
 class Usuario(AbstractUser):
+    """
+    Objeto que representa una cuenta básica de usuario. Todos los tipos de usuarios que maneja el sitio
+    usan esta cuenta como autentificación.
+    """
+
     tipo_usuario = models.PositiveSmallIntegerField(choices=TIPO_CHOICES, default=Tipo.COLABORADOR.value)
 
     def __str__(self):
@@ -20,6 +25,12 @@ class Usuario(AbstractUser):
 
 
 class Colaborador(models.Model):
+    """
+    Objeto que representa a un usuario con cateogría de Colaborador.
+    Los colaboradores no pueden registrarse, los crea el sysadmin y les otorga contraseñas temporales.
+
+    Los colaboradores pueden crear noticias que serán luego aprobadas y publicadas por un editor.
+    """
     user = models.OneToOneField(Usuario, verbose_name="Cuenta asociada", on_delete=models.CASCADE, primary_key=True,
                                 db_index=True)
     rut = models.CharField(max_length=12, verbose_name="RUN")
@@ -42,6 +53,8 @@ class Colaborador(models.Model):
 
 
 class Publicacion(models.Model):
+    """Representación de una noticia/publicación de blog en el sitio"""
+
     autor = models.ForeignKey(Colaborador, on_delete=models.CASCADE, db_index=True)
     fecha = models.DateTimeField(verbose_name="Fecha publicación", auto_now=True, db_index=True)
     titulo = models.CharField(max_length=250, verbose_name="Título", db_index=True)

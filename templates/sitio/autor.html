@@ -1,0 +1,45 @@
+{% extends 'sitio/base.html' %}
+
+{% block contenido %}
+    {% if posts %}
+    <ul class="collection with-header">
+        <li class="collection-item avatar">
+            <img src="https://thispersondoesnotexist.com/favicon.png" alt="foto de {{ autor.nombre }}"
+                 class="circle">
+            <span class="title center">{{ autor.nombre }}</span>
+            <p><span class="left">Noticias publicadas: {{ noticias_publicadas }}</span><span class="right">Total noticias: {{ total_noticias }}</span></p>
+        </li>
+        <li class="collection-item">
+                <p class="collection-header">Todo de este autor:</p>
+                {% for noticia in posts %}
+                    <div>
+                        <a href="{% url 'noticia' noticia.pk %}">{{ noticia.titulo }}</a>
+                        <span class="right">visitas: {{ noticia.visitas }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </li>
+    </ul>
+
+    {% if is_paginated %}
+
+        {% if page_obj.has_previous %}
+            <a class="" href="?page=1">Primera</a>
+            <a class="" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+            <a class="" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+        {% endif %}
+
+    {% endif %}
+{% endblock contenido %}

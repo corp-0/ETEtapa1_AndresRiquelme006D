@@ -10,7 +10,7 @@
                         <img src="https://openweathermap.org/img/wn/{{ el_clima.icono }}@2x.png" alt="{{ el_clima.desc }}">
                     </div>
                     <div class="col 10 valign-wrapper">
-                        <p class="center-align"> Hoy está: {{ el_clima.desc }} y hacen {{ el_clima.temp }}ºC</p>
+                        <p class="center-align"> Hoy hay: <b>{{ el_clima.desc }}</b> y hacen <b>{{ el_clima.temp }}ºC</b></p>
                     </div>
                 </div>
             </div>
@@ -20,7 +20,7 @@
         <li class="collection-item">
             <p class="collection-header">Noticia más leída:</p>
             <div>
-                <a href="#">🔥 {{ noticia_caliente.titulo }} por {{ noticia_caliente.autor }}</a>
+                <a href="{% url 'noticia' noticia_caliente.pk %}">🔥 {{ noticia_caliente.titulo }} por {{ noticia_caliente.autor }}</a>
                 <span class="right">visitas: {{ noticia_caliente.visitas }}</span>
             </div>
         </li>
@@ -33,11 +33,11 @@
             <div class="card">
                 <div class="card-content">
                     <h3>{{ post.titulo }}</h3>
-                    <small>escrito por <a href="#">{{ post.autor }}</a> el {{ post.fecha }} </small>
+                    <small>escrito por <a href="{% url 'autor' autor_id=post.autor_id %}">{{ post.autor }}</a> el {{ post.fecha }} </small>
                     <p class="flow-text">{{ post.contenido|truncatewords:30 }}</p>
                 </div>
                 <div class="card-action">
-                    <a href="#">Leer más</a>
+                    <a href="{% url 'noticia' post.pk %}">Leer más</a>
                 </div>
             </div>
         {% endfor %}
