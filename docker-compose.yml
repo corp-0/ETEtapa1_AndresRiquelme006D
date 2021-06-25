@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+    x-django-defaults: &django_defaults
+        image: corp0/caosnews
+        env_file: ./.env
+
+    web_migration:
+        <<: *django_defaults
+        command: migrate
+
+    web:
+        <<: *django_defaults
+        depends_on:
+            - web_migration
+        ports:
+            - "8000:8000"
