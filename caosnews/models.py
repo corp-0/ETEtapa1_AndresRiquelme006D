@@ -1,25 +1,30 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.signals import post_save, post_delete
-
-from .model_mixins import ModelCacheMixin
-from .listeners import clear_model_cache
-
-from .usuario import TIPO_CHOICES, Tipo
+from .tipo_usuario import TIPO_CHOICES, Tipo
 
 
 class Usuario(AbstractUser):
-    tipo_usuario = models.PositiveSmallIntegerField(choices=TIPO_CHOICES)
+    tipo_usuario = models.PositiveSmallIntegerField(choices=TIPO_CHOICES, default=Tipo.COLABORADOR.value)
 
     def __str__(self):
         return f"{Tipo(self.tipo_usuario).name} {self.username}"
 
+    def es_colaborador(self) -> bool:
+        return self.tipo_usuario == Tipo.COLABORADOR.value
+
+    def es_editor(self) -> bool:
+        return self.tipo_usuario == Tipo.EDITOR.value
+
+    def es_sysadmin(self) -> bool:
+        return self.tipo_usuario == Tipo.ADMINISTRADOR.value
+
 
 class Colaborador(models.Model):
-    user = models.OneToOneField(Usuario, verbose_name="Cuenta asociada", on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(Usuario, verbose_name="Cuenta asociada", on_delete=models.CASCADE, primary_key=True,
+                                db_index=True)
     rut = models.CharField(max_length=12, verbose_name="RUN")
     foto = models.ImageField(verbose_name="Fotografía")
-    nombre = models.CharField(max_length=200, verbose_name="Nombre completo")
+    nombre = models.CharField(max_length=200, verbose_name="Nombre completo", db_index=True)
     fono = models.CharField(max_length=15, verbose_name="Teléfono")
     direccion = models.CharField(max_length=200, verbose_name="Dirección")
     pais = models.CharField(max_length=15, verbose_name="País")
@@ -36,19 +41,13 @@ class Colaborador(models.Model):
         return f"{self.nombre}"
 
 
-class Publicacion(models.Model, ModelCacheMixin):
-    autor = models.ForeignKey(Colaborador, on_delete=models.CASCADE)
-    fecha = models.DateTimeField(verbose_name="Fecha publicación", auto_now=True)
-    titulo = models.CharField(max_length=250, verbose_name="Título")
+class Publicacion(models.Model):
+    autor = models.ForeignKey(Colaborador, on_delete=models.CASCADE, db_index=True)
+    fecha = models.DateTimeField(verbose_name="Fecha publicación", auto_now=True, db_index=True)
+    titulo = models.CharField(max_length=250, verbose_name="Título", db_index=True)
     contenido = models.TextField(verbose_name="Contenido")
     publicada = models.BooleanField(verbose_name="Publicada", default=False)
-
-    CACHE_KEY = "fecha"
-    CACHED_RELATED_OBJECT = ["autor"]
+    visitas = models.IntegerField(verbose_name="número de visitas", editable=False, default=0)
 
     def __str__(self):
         return f"{self.titulo} por: {self.autor.nombre}"
-
-
-post_save.connect(clear_model_cache, sender=Publicacion)
-post_delete.connect(clear_model_cache, sender=Publicacion)
