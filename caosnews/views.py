@@ -6,7 +6,10 @@ import os
 from .models import Publicacion
 import json
 
+from functools import lru_cache
 
+
+@lru_cache(maxsize=32)
 def obtener_clima() -> dict:
     url = f"https://api.openweathermap.org/data/2.5/weather?q=Santiago&units=metric&lang=es&appid={os.getenv('CLIMA_API')}"
     r = request.urlopen(url)
@@ -35,6 +38,6 @@ class Home(ListView):
         context = super(Home, self).get_context_data(**kwargs)
         context["title"] = "Home"
         context["noticia_caliente"] = self.noticia_caliente
-        # context["el_clima"] = obtener_clima()
+        context["el_clima"] = obtener_clima()
 
         return context
