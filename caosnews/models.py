@@ -12,7 +12,7 @@ class Usuario(AbstractUser):
     tipo_usuario = models.PositiveSmallIntegerField(choices=TIPO_CHOICES, default=Tipo.COLABORADOR.value)
 
     def __str__(self):
-        return f"{Tipo(self.tipo_usuario).name} {self.username}"
+        return f"{self.username}"
 
     def es_colaborador(self) -> bool:
         return self.tipo_usuario == Tipo.COLABORADOR.value
