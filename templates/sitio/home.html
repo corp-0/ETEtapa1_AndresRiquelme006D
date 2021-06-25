@@ -1,35 +1,67 @@
-{% extends 'sitio/base.html' %}
+{% extends "sitio/base.html" %}
 {% block contenido %}
-    {% if noticia_caliente %}
-        <div class="container">
-            <div class="row">
-                <div class="col s12">
-                    <div class="card horizontal">
-                        <div class="card-stacked">
-                            <div class="card-content">
-                                <p>¡Noticia caliente!</p>
-                                <h3 class="flow-text">{{ noticia_caliente.titulo }}</h3>
-                                <small>por {{ noticia_caliente.autor }}</small>
-                            </div>
-                        </div>
+    <ul class="collection with-header">
+        {% if el_clima %}
+        <li class="collection-item">
+            <p class="collection-header">El clima hoy:</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col 2">
+                        <img src="https://openweathermap.org/img/wn/{{ el_clima.icono }}@2x.png" alt="{{ el_clima.desc }}">
+                    </div>
+                    <div class="col 10 valign-wrapper">
+                        <p class="center-align"> Hoy está: {{ el_clima.desc }} y hacen {{ el_clima.temp }}ºC</p>
                     </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
+        </li>
+        {% endif %}
+        {% if noticia_caliente %}
+        <li class="collection-item">
+            <p class="collection-header">Noticia más leída:</p>
+            <div>
+                <a href="#">🔥 {{ noticia_caliente.titulo }} por {{ noticia_caliente.autor }}</a>
+                <span class="right">visitas: {{ noticia_caliente.visitas }}</span>
+            </div>
+        </li>
+        {% endif %}
+    </ul>
 
-    {% for post in posts %}
-        <h3>{{ post.titulo }}</h3>
-        <p>por <a href="#">{{ post.autor }}</a>, escrito el {{ post.fecha }}</p>
-        <div class="noticia-contenido">
-            <p>{{ post.contenido }}</p>
-        </div>
-    {% endfor %}
-    {% if posts.has_previous %}
-        <a href="?page={{ posts.previous_page_number }}" class="left"> << Noticia anterior </a>
+    <ul class="collection with-header">
+        <li class="flow-text center-align">Últimas noticias</li>
+        {% for post in posts %}
+            <div class="card">
+                <div class="card-content">
+                    <h3>{{ post.titulo }}</h3>
+                    <small>escrito por <a href="#">{{ post.autor }}</a> el {{ post.fecha }} </small>
+                    <p class="flow-text">{{ post.contenido|truncatewords:30 }}</p>
+                </div>
+                <div class="card-action">
+                    <a href="#">Leer más</a>
+                </div>
+            </div>
+        {% endfor %}
+    </ul>
+
+    {% if is_paginated %}
+
+        {% if page_obj.has_previous %}
+            <a class="" href="?page=1">Primera</a>
+            <a class="" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a class="" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+            <a class="" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+        {% endif %}
+
     {% endif %}
-    {% if posts.has_next %}
-        <a href="?page={{ posts.next_page_number }}" class="right"> Más noticias >> </a>
-    {% endif %}
-    </br></br></br>
-{% endblock %}
+{% endblock contenido %}
