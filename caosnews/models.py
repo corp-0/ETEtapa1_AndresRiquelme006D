@@ -23,6 +23,9 @@ class Usuario(AbstractUser):
     def es_sysadmin(self) -> bool:
         return self.tipo_usuario == Tipo.ADMINISTRADOR.value
 
+    def es_almenos_editor(self) -> bool:
+        return self.tipo_usuario <= Tipo.EDITOR.value
+
 
 class Colaborador(models.Model):
     """
