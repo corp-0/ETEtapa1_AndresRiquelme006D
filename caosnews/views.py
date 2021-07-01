@@ -2,6 +2,7 @@ import json
 import os
 from functools import lru_cache
 from urllib import request
+from urllib.error import HTTPError
 
 from django.db.models import Max
 from django.views.generic import ListView
@@ -12,16 +13,22 @@ from .models import Publicacion, Colaborador
 
 @lru_cache(maxsize=32)
 def obtener_clima() -> dict:
-    url = f"https://api.openweathermap.org/data/2.5/weather?q=Santiago&units=metric&lang=es&appid={os.getenv('CLIMA_API')}"
-    r = request.urlopen(url)
-    respuesta = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
-    print(respuesta)
+    try:
+        url = f"https://api.openweathermap.org/data/2.5/" \
+              f"weather?q=Santiago&units=metric&lang=es&appid={os.getenv('CLIMA_API')}"
+        r = request.urlopen(url)
+        respuesta = json.loads(r.read().decode(r.info().get_param('charset') or 'utf-8'))
+        print(respuesta)
 
-    data = {
-        "desc": respuesta["weather"][0]["description"],
-        "icono": respuesta["weather"][0]["icon"],
-        "temp": respuesta["main"]["temp"]
-    }
+        data = {
+            "desc": respuesta["weather"][0]["description"],
+            "icono": respuesta["weather"][0]["icon"],
+            "temp": respuesta["main"]["temp"]
+        }
+    except HTTPError:
+        print("Intento de consumir la api del clima resultó en excepción. "
+              "¿Está configurada la API key del clima en las variables de entorno?")
+        data = {}
 
     return data
 
@@ -81,5 +88,3 @@ class Autor(ListView):
         context["noticias_publicadas"] = noticias.exclude(publicada=False).count()
 
         return context
-
-
