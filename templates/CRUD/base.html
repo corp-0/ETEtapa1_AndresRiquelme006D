@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.min.css' %}" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/estilos.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    {% if title %}
+        <title>Caos CRUD - {{ title }}</title>
+    {% else %}
+        <title>Caos CRUD</title>
+    {% endif %}
+
+    <style>
+        .table-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<nav class="nav-extended black white-text">
+    <div class="nav-wrapper">
+        <a href="{% url 'crud_index' %}" class="brand-logo">CAOS CRUD</a>
+        <a href="#" data-target="mobile-nav" class="sidenav-trigger">
+            <i class="material-icons">menu</i>
+        </a>
+    </div>
+    <div class="nav-content hide-on-med-and-down">
+        <ul class="tabs tabs-transparent">
+            {% if user.es_sysadmin %}
+                <li class="tab">
+                    <a class={% block class_editores %}""{% endblock %} href="{% url 'vista_editores' %}">Editores</a>
+                </li>
+                <li class="tab">
+                    <a class={% block class_colabs %}""{% endblock %}
+                       href="{% url 'vista_colaboradores' %}">Colaboradores</a>
+                </li>
+            {% endif %}
+            <li class="tab">
+                <a class={% block class_noticias %}""{% endblock %} href="{% url 'vista_noticias' %}">Noticias</a>
+            </li>
+            <li class="right"><a href="{% url 'home' %}">Volver al sitio</a></li>
+        </ul>
+    </div>
+</nav>
+
+<ul class="sidenav" id="mobile-nav">
+    <li>
+        <a href="{% url 'home' %}">Volver al sitio</a>
+    </li>
+    {% if user.es_sysadmin %}
+        <li>
+            <a href="{% url 'crud_index' %}">CRUD</a>
+        </li>
+        <li>
+            <a href="{% url 'vista_editores' %}">Editores</a>
+        </li>
+        <li>
+            <a href="{% url 'vista_colaboradores' %}">Colaboradores</a>
+        </li>
+    {% endif %}
+    <li>
+        <a href="{% url 'vista_colaboradores' %}">Noticias</a>
+    </li>
+</ul>
+<br>
+
+<div class="container">
+    <div>
+        <div class="card">
+            <div class="card-content black-text">
+                <span class="card-title">
+                    {% if title %}{{ title }}{% else %}Tabla{% endif %}
+                    {% block boton_agregar %}
+                        <a href="{% block enlace_agregar %}{% endblock %}" class="waves-effect waves-teal btn-flat"><i
+                                class="material-icons">playlist_add</i></a>
+                    {% endblock %}
+                </span>
+                {% block contenido %}
+                    <table class="highlight centered responsive-table">
+                        <thead style="color: #5d5d5d; font-size: 13px;">
+                        {% block header_tabla %}
+                            <tr>
+                                <th>Columna 1</th>
+                                <th>Columna 2</th>
+                                <th>Columna 3</th>
+                                <th>Columna 4</th>
+                            </tr>
+                        {% endblock %}
+                        </thead>
+                        <tbody>
+                        {% block cuerpo_tabla %}
+                            <tr>
+                                <td>11232132131</td>
+                                <td>Alvin</td>
+                                <td>Eclair</td>
+                                <td>Chocolate</td>
+                                <td>
+                                    <a class="waves-effect waves-teal btn-flat">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="waves-effect waves-teal btn-flat">
+                                        <i class="material-icons">remove</i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11232132131</td>
+                                <td>Alvin</td>
+                                <td>Eclair</td>
+                                <td>Chocolate</td>
+                                <td>
+                                    <a class="waves-effect waves-teal btn-flat">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="waves-effect waves-teal btn-flat">
+                                        <i class="material-icons">remove</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endblock %}
+                        </tbody>
+                    </table>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const elems = document.querySelectorAll('.sidenav');
+        const instances = M.Sidenav.init(elems, {});
+
+    });
+    {% if request.GET.mensaje %}
+       M.toast({html: '{{ request.GET.mensaje }}'})
+    {% endif %}
+</script>
+{% block extra_js %}{% endblock %}
+
+</body>
+{% include 'common/footer.html' %}
+</html>
