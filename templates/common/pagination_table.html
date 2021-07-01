@@ -1,0 +1,14 @@
+<tr>
+    <td>
+        {% if paginator.has_previous %}
+            <a href="?page={{ paginator.previous_page_number }}"><i class="material-icons black-text">west</i></a>
+        {% endif %}
+    </td>
+    <td></td><td></td><td></td><td></td>
+    <td>
+        {% if paginator.has_next %}
+            <a href="?page={{ paginator.next_page_number }}"><i class="material-icons black-text">east</i></a>
+        {% endif %}
+    </td>
+
+</tr>
