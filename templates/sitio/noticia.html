@@ -9,9 +9,11 @@
         <section>
             <ul class="collection">
                 <li class="collection-item avatar">
-                    <img src="https://thispersondoesnotexist.com/favicon.png" alt="foto de {{ noticia.autor }}"
+                    <a href="{% url 'autor' noticia.autor_id %}">
+                        <img src="https://thispersondoesnotexist.com/favicon.png" alt="foto de {{ noticia.autor }}"
                          class="circle">
-                    <span class="title">{{ noticia.autor }}</span>
+                    </a>
+                    <a href="{% url 'autor' noticia.autor_id %}" class="title">{{ noticia.autor }}</a>
                     <p>Escrita el {{ noticia.fecha }}</p>
                     <p class="right">Visitas: {{ noticia.visitas }}</p>
                 </li>
