@@ -1,62 +1,10 @@
 {% extends 'CRUD/base.html' %}
 
-{% block boton_agregar %}{% endblock %}
-{% block header_tabla %}
-    <tr>
-        <th>Modelo</th>
-    </tr>
-{% endblock %}
-{% block cuerpo_tabla %}
-    <tr style="cursor: pointer" class="clickable-row" data-href="{% url 'vista_editores' %}">
-        <td>
-            <div class="container">
-                <div class="row">
-                    <div class="col s1">
-                        <i class="material-icons">perm_identity</i>
-                    </div>
-                    <div class="col s10">
-                        <span>Editores</span>
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>
-    <tr style="cursor: pointer" class="clickable-row" data-href="{% url 'vista_colaboradores' %}">
-        <td>
-            <div class="container">
-                <div class="row">
-                    <div class="col s1">
-                        <i class="material-icons">groups</i>
-                    </div>
-                    <div class="col s10">
-                        <span>Colaboradores</span>
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>
-    <tr style="cursor: pointer" class="clickable-row" data-href="{% url 'vista_noticias' %}">
-        <td>
-            <div class="container">
-                <div class="row">
-                    <div class="col s1">
-                        <i class="material-icons">article</i>
-                    </div>
-                    <div class="col s10">
-                        <span>Noticias</span>
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>
-
-{% endblock %}
-{% block extra_js %}
-    <script>
-        jQuery(document).ready(function ($) {
-            $(".clickable-row").click(function () {
-                window.location = $(this).data("href");
-            });
-        });
-    </script>
-{% endblock %}
+{% block contenido %}
+    {#TODO Mejorar esta cosa y convertirla en un dashboard decente! #}
+    <ul>
+        <li><a href="{% url 'vista_editores' %}">Editores</a></li>
+        <li><a href="{% url 'vista_colaboradores' %}">Colaboradores</a></li>
+        <li><a href="{% url 'vista_noticias' %}">Noticias</a></li>
+    </ul>
+{% endblock contenido %}

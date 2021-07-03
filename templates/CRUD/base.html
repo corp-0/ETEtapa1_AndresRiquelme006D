@@ -39,15 +39,15 @@
         <ul class="tabs tabs-transparent">
             {% if user.es_sysadmin %}
                 <li class="tab">
-                    <a class={% block class_editores %}""{% endblock %} href="{% url 'vista_editores' %}">Editores</a>
+                    <a class="{{ clases_editores }}" href="{% url 'vista_editores' %}">Editores</a>
                 </li>
                 <li class="tab">
-                    <a class={% block class_colabs %}""{% endblock %}
+                    <a class="{{ clases_colaboradores }}"
                        href="{% url 'vista_colaboradores' %}">Colaboradores</a>
                 </li>
             {% endif %}
             <li class="tab">
-                <a class={% block class_noticias %}""{% endblock %} href="{% url 'vista_noticias' %}">Noticias</a>
+                <a class="{{ clases_noticias }}" href="{% url 'vista_noticias' %}">Noticias</a>
             </li>
             <li class="right"><a href="{% url 'home' %}">Volver al sitio</a></li>
         </ul>
@@ -70,7 +70,7 @@
         </li>
     {% endif %}
     <li>
-        <a href="{% url 'vista_colaboradores' %}">Noticias</a>
+        <a href="{% url 'vista_noticias' %}">Noticias</a>
     </li>
 </ul>
 <br>
@@ -80,62 +80,17 @@
         <div class="card">
             <div class="card-content black-text">
                 <span class="card-title">
-                    {% if title %}{{ title }}{% else %}Tabla{% endif %}
-                    {% block boton_agregar %}
-                        <a href="{% block enlace_agregar %}{% endblock %}" class="waves-effect waves-teal btn-flat"><i
+                    {% if title %}{{ title }}{% else %}{% endif %}
+
+                    {% if enlace_agregar %}
+                        <a href="{{ enlace_agregar }}" class="waves-effect waves-teal btn-flat"><i
                                 class="material-icons">playlist_add</i></a>
-                    {% endblock %}
+                    {% endif %}
+
                 </span>
-                {% block contenido %}
-                    <table class="highlight centered responsive-table">
-                        <thead style="color: #5d5d5d; font-size: 13px;">
-                        {% block header_tabla %}
-                            <tr>
-                                <th>Columna 1</th>
-                                <th>Columna 2</th>
-                                <th>Columna 3</th>
-                                <th>Columna 4</th>
-                            </tr>
-                        {% endblock %}
-                        </thead>
-                        <tbody>
-                        {% block cuerpo_tabla %}
-                            <tr>
-                                <td>11232132131</td>
-                                <td>Alvin</td>
-                                <td>Eclair</td>
-                                <td>Chocolate</td>
-                                <td>
-                                    <a class="waves-effect waves-teal btn-flat">
-                                        <i class="material-icons">edit</i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="waves-effect waves-teal btn-flat">
-                                        <i class="material-icons">remove</i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>11232132131</td>
-                                <td>Alvin</td>
-                                <td>Eclair</td>
-                                <td>Chocolate</td>
-                                <td>
-                                    <a class="waves-effect waves-teal btn-flat">
-                                        <i class="material-icons">edit</i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="waves-effect waves-teal btn-flat">
-                                        <i class="material-icons">remove</i>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endblock %}
-                        </tbody>
-                    </table>
-                {% endblock %}
+
+                {% block contenido %}{% endblock %}
+
             </div>
         </div>
     </div>
@@ -148,9 +103,22 @@
         const elems = document.querySelectorAll('.sidenav');
         const instances = M.Sidenav.init(elems, {});
 
+        $('select').formSelect();
+        $('.datepicker').datepicker({'format': 'yyyy-mm-dd'});
+
     });
-    {% if request.GET.mensaje %}
-       M.toast({html: '{{ request.GET.mensaje }}'})
+
+
+    {% if messages %}
+        {% for message in messages %}
+            color = {
+                'success': 'green',
+                'error': 'red',
+                'warning': 'yellow'
+            }
+
+            M.toast({html: '{{ message | striptags }}', classes: color['{{ message.tags }}']});
+        {% endfor %}
     {% endif %}
 </script>
 {% block extra_js %}{% endblock %}

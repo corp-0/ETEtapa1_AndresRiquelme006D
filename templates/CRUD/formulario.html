@@ -1,0 +1,20 @@
+{% extends 'CRUD/base.html' %}
+{% block boton_agregar %}{# deshabilita el botón de agregar #}{% endblock %}
+{% load materializecss %}
+
+{% block contenido %}
+    <div class="container">
+        <form enctype="multipart/form-data" method="post" action="{{ url_lista_modelo }}">
+            {% csrf_token %}
+            {% if formulario_1 %}
+                {{ formulario_1 | materializecss }}
+            {% endif %}
+            {% if formulario_2 %}
+                {{ formulario_2 | materializecss }}
+            {% endif %}
+
+            <br><br>
+            <input class="btn" type="submit" name="Confirmar">
+        </form>
+    </div>
+{% endblock contenido %}
