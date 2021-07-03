@@ -1,7 +1,8 @@
-asgiref==3.3.4
+asgiref==3.4.1
 cx-Oracle==8.2.1
-Django==3.2.4
-Pillow==8.2.0
+Django==3.2.5
+django-materializecss-form==1.1.17
+Pillow==8.3.0
 python-dotenv==0.18.0
 pytz==2021.1
 sqlparse==0.4.1
