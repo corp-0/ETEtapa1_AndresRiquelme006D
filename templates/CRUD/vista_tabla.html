@@ -1,0 +1,65 @@
+{% extends 'CRUD/base.html' %}
+
+{% block contenido %}
+    <table class="highlight centered responsive-table">
+        <thead style="color: #5d5d5d; font-size: 13px;">
+        {% if headers_tabla %}
+            <tr>
+                {% for h in headers_tabla %}
+                    <th>{{ h }}</th>
+                {% endfor %}
+            </tr>
+        {% endif %}
+
+        </thead>
+        <tbody>
+        {% if cuerpo_tabla %}
+            {% for c in cuerpo_tabla %}
+            <tr>
+                    {% for campo in c.campos %}
+                        <td>{{ campo | safe }}</td>
+                    {% endfor %}
+                <td>
+                    <a href="{{ c.url_editar }}/{{ c.pk }}" class="waves-effect waves-teal btn-flat">
+                        <i class="material-icons">edit</i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ c.url_eliminar }}/{{ c.pk }}" class="waves-effect waves-teal btn-flat">
+                        <i class="material-icons">remove</i>
+                    </a>
+            </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    <div class="row">
+        {% if paginado %}
+            {% if paginado.has_other_pages %}
+                {% include 'common/pagination_table.html' with paginator=paginado %}
+            {% endif %}
+        {% endif %}
+
+    </div>
+{% endblock contenido %}
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>¿Está seguro?</h4>
+        <p id="modalMensaje">weuweuweuweuweuw</p>
+    </div>
+    <div class="modal-footer">
+        <a id="botonBorrar" href="{% url 'borrar_usuario' 'ID_COLAB' %}"
+           class="modal-close waves-effect waves-red btn-flat">Eliminar</a>
+        <a onclick="resetModalData()" class="modal-close waves-effect waves-green btn-flat">Volver</a>
+    </div>
+</div>
+
+<script>
+    function setModalData(pk, nombre) {
+        document.getElementById("modalMensaje").innerHTML = "Se eliminará <b>" + nombre + "</b>, ¡Permanentemente!";
+        let url = document.getElementById("botonBorrar").getAttribute("href");
+        url = url.replace("ID_COLAB", pk)
+        document.getElementById("botonBorrar").setAttribute("href", url);
+    }
+</script>

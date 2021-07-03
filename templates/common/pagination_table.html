@@ -1,14 +1,41 @@
-<tr>
-    <td>
-        {% if paginator.has_previous %}
-            <a href="?page={{ paginator.previous_page_number }}"><i class="material-icons black-text">west</i></a>
-        {% endif %}
-    </td>
-    <td></td><td></td><td></td><td></td>
-    <td>
-        {% if paginator.has_next %}
-            <a href="?page={{ paginator.next_page_number }}"><i class="material-icons black-text">east</i></a>
-        {% endif %}
-    </td>
+<ul class="pagination">
+    {% if not paginator.number == 1 %}
+    <li>
+        <a href="?page=1">
+            <i class="material-icons">first_page</i>
+        </a>
+    </li>
+    {% endif %}
 
-</tr>
+    {% if paginator.has_previous %}
+        <li>
+            <a href="?page={{ paginator.previous_page_number }}">
+                <i class="material-icons">chevron_left</i>
+            </a>
+        </li>
+    {% endif %}
+
+    {% for num in paginator.paginator.page_range %}
+        {% if paginator.number == num %}
+            <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+        {% elif num > paginator.number|add:'-3' and num < paginator.number|add:'3' %}
+            <li class=""><a href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if paginator.has_next %}
+        <li>
+            <a href="?page={{ paginator.next_page_number }}">
+                <i class="material-icons">chevron_right</i>
+            </a>
+        </li>
+    {% endif %}
+
+    {% if not paginator.number == paginator.paginator.num_pages %}
+    <li>
+        <a href="?page={{ paginator.paginator.num_pages }}">
+            <i class="material-icons">last_page</i>
+        </a>
+    </li>
+    {% endif %}
+</ul>
