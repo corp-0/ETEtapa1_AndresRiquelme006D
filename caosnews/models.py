@@ -37,14 +37,14 @@ class Colaborador(models.Model):
     user = models.OneToOneField(Usuario, verbose_name="Cuenta asociada", on_delete=models.CASCADE, primary_key=True,
                                 db_index=True)
     rut = models.CharField(max_length=12, verbose_name="RUN")
-    foto = models.ImageField(verbose_name="Fotografía")
+    foto = models.ImageField(verbose_name="Fotografía", upload_to="subidas/img/")
     nombre = models.CharField(max_length=200, verbose_name="Nombre completo", db_index=True)
     fono = models.CharField(max_length=15, verbose_name="Teléfono")
     direccion = models.CharField(max_length=200, verbose_name="Dirección")
     pais = models.CharField(max_length=15, verbose_name="País")
 
     def generar_pass_temporal(self) -> str:
-        ident = f"{self.user.id.zfill(2)[:2]}"
+        ident = f"{str(self.user.id).zfill(2)[:2]}"
         nombre = f"{self.nombre.upper()[:2]}"
         pais = f"{self.pais.lower()[-2:]}"
         fono = f"{self.fono[-2:]}"
