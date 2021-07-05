@@ -30,4 +30,4 @@
     - Apartir de entonces, podrá ingresar usando ``http://localhost:8000/crud`` o mediante el enlace en la barra de navegación.
    
 ### Live demo
-Es posible navegar y ver el sitio web en [este enalce](http://gilles.brazilsouth.cloudapp.azure.com:5050)
+Es posible navegar y ver el sitio web en [este enlace](http://gilles.brazilsouth.cloudapp.azure.com:5050)
